@@ -13,8 +13,9 @@ struct ExpenseTrackingMultiApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            HomeView().environment(\.managedObjectContext, persistenceController.container.viewContext)
+//            ExpensesNavigationView()
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

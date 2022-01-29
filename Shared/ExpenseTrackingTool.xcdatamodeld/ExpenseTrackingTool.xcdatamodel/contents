@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Expense" representedClassName="Expense" syncable="YES">
+        <attribute name="cost" optional="YES" attributeType="Decimal" minValueString="0"/>
+        <attribute name="date_created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date_transaction" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="purpose" attributeType="String" defaultValueString=""/>
+        <attribute name="short_description" optional="YES" attributeType="String"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Expense_Category" inverseName="expenses" inverseEntity="Expense_Category"/>
+        <relationship name="expense_detail" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Expense_Detail" inverseName="expense" inverseEntity="Expense_Detail"/>
+    </entity>
+    <entity name="Expense_Category" representedClassName="Expense_Category" syncable="YES" codeGenerationType="class">
+        <attribute name="name" attributeType="String" defaultValueString="NULL_CATEGORY"/>
+        <relationship name="expense_detail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Expense_Detail" inverseName="category" inverseEntity="Expense_Detail"/>
+        <relationship name="expenses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Expense" inverseName="categories" inverseEntity="Expense"/>
+    </entity>
+    <entity name="Expense_Detail" representedClassName="Expense_Detail" syncable="YES">
+        <attribute name="cost" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="purpose" attributeType="String" defaultValueString=""/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Expense_Category" inverseName="expense_detail" inverseEntity="Expense_Category"/>
+        <relationship name="expense" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Expense" inverseName="expense_detail" inverseEntity="Expense"/>
+        <fetchedProperty name="get_all_expense_details_from_expense" optional="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="Expense_Detail"/>
+        </fetchedProperty>
+    </entity>
+    <elements>
+        <element name="Expense" positionX="-63" positionY="-18" width="128" height="149"/>
+        <element name="Expense_Category" positionX="353.9609375" positionY="14.38671875" width="128" height="74"/>
+        <element name="Expense_Detail" positionX="144" positionY="45" width="128" height="125"/>
+    </elements>
+</model>

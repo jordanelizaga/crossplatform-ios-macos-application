@@ -1,8 +1,8 @@
 //
 //  Persistence.swift
-//  Shared
+//  ExpenseTrackingTool
 //
-//  Created by Jordan Elizaga on 1/27/22.
+//  Created by Jordan Elizaga on 1/26/22.
 //
 
 import CoreData
@@ -13,9 +13,17 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+        for i in 0..<10 {
+            let expense = Expense(context: viewContext)
+            expense.date_created = Calendar.current.date(byAdding: .day, value: i, to: Date())
+            expense.cost = NSDecimalNumber(integerLiteral: i)
+            expense.purpose = String(i)
+            print(expense)
+        }
+        
+        for ele in ["food","groceries"] {
+            let categ = Expense_Category(context: viewContext)
+            categ.name = ele
         }
         do {
             try viewContext.save()
@@ -29,13 +37,21 @@ struct PersistenceController {
     }()
 
     let container: NSPersistentCloudKitContainer
+    
+    private func DeleteDatabase(container: NSPersistentCloudKitContainer) {
+        try! container.persistentStoreCoordinator.destroyPersistentStore(at: container.persistentStoreDescriptions.first!.url!, ofType: container.persistentStoreDescriptions.first!.type, options: container.persistentStoreDescriptions.first!.options)
+
+    }
 
     init(inMemory: Bool = false) {
-        container = NSPersistentCloudKitContainer(name: "ExpenseTrackingMulti")
+        container = NSPersistentCloudKitContainer(name: "ExpenseTrackingTool")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
+        
         container.viewContext.automaticallyMergesChangesFromParent = true
+        
+//        DeleteDatabase(container: container)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
